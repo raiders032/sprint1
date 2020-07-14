@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -40,6 +44,9 @@ public class User extends DateEntity{
 
     private String providerId;
 
+    @OneToMany(mappedBy = "user")
+    private Set<UserCategory> categories = new HashSet<>();
+
     public User(String name, String email, String password) {
 
     }
@@ -66,5 +73,10 @@ public class User extends DateEntity{
 
     public void changeName(String name) {
         this.name=name;
+    }
+
+    public void changeUserCategory(Set<UserCategory> userCategories) {
+        this.categories=userCategories;
+        userCategories.forEach(userCategory -> userCategory.changeUser(this));
     }
 }

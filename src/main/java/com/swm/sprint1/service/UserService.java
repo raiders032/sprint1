@@ -1,17 +1,22 @@
 package com.swm.sprint1.service;
 
 import com.swm.sprint1.domain.AuthProvider;
+import com.swm.sprint1.domain.Category;
 import com.swm.sprint1.domain.User;
+import com.swm.sprint1.domain.UserCategory;
 import com.swm.sprint1.exception.ResourceNotFoundException;
+import com.swm.sprint1.payload.UpdateUserCategoryRequest;
 import com.swm.sprint1.payload.SignUpRequest;
+import com.swm.sprint1.repository.CategoryRepository;
+import com.swm.sprint1.repository.UserCategoryRepository;
 import com.swm.sprint1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -19,7 +24,9 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserCategoryRepository userCategoryRepository;
 
     @Transactional
     public User createUser(SignUpRequest signUpRequest) {
@@ -35,5 +42,17 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("User", "id", id));
         user.changeName(name);
+    }
+
+    @Transactional
+    public void updateUserCategories(Long id, UpdateUserCategoryRequest updateUserCategoryRequest) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User", "id", id));
+
+        userCategoryRepository.deleteUserCategory(user.getId());
+        Set<UserCategory> userCategories = updateUserCategoryRequest.getCategories().stream()
+                .map(name -> new UserCategory(categoryRepository.findByName(name))).collect(Collectors.toSet());
+        user.changeUserCategory(userCategories);
+        userCategories.forEach(userCategory -> userCategoryRepository.save(userCategory));
     }
 }

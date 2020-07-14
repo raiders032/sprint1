@@ -5,10 +5,11 @@ package com.swm.sprint1.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class UserCategory{
@@ -24,4 +25,12 @@ public class UserCategory{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    public UserCategory(Category category) {
+        this.category = category;
+    }
+
+    public void changeUser(User user){
+        this.user=user;
+    }
 }

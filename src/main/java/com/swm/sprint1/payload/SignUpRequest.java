@@ -1,6 +1,5 @@
 package com.swm.sprint1.payload;
 
-import com.swm.sprint1.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
