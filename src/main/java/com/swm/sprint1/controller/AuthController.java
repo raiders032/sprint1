@@ -36,7 +36,6 @@ public class AuthController {
 
     private final UserRepository userRepository;
 
-
     private final TokenProvider tokenProvider;
 
     private final UserService userService;
