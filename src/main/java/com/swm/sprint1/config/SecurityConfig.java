@@ -15,6 +15,7 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -60,6 +61,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
+
+    private static final String[] AUTH_WHITELIST = {
+            // -- swagger ui
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"
+            // other public endpoints of your API may be appended to this array
+    };
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -111,6 +124,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .permitAll()
                     .antMatchers("/auth/**", "/oauth2/**")
                         .permitAll()
+                    .antMatchers(AUTH_WHITELIST)
+                        .permitAll()
                     .anyRequest()
                         .authenticated()
                     .and()
@@ -131,4 +146,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+
 }
