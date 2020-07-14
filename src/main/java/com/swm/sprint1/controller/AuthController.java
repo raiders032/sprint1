@@ -1,6 +1,5 @@
 package com.swm.sprint1.controller;
 
-
 import com.swm.sprint1.domain.AuthProvider;
 import com.swm.sprint1.domain.User;
 import com.swm.sprint1.exception.BadRequestException;
@@ -10,7 +9,9 @@ import com.swm.sprint1.payload.LoginRequest;
 import com.swm.sprint1.payload.SignUpRequest;
 import com.swm.sprint1.repository.UserRepository;
 import com.swm.sprint1.security.TokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.swm.sprint1.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,21 +27,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
-@RestController
+@RequiredArgsConstructor
 @RequestMapping("/auth")
+@RestController
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
+
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -63,16 +62,7 @@ public class AuthController {
             throw new BadRequestException("Email address already in use.");
         }
 
-        // Creating user's account
-        User user = new User();
-        user.setName(signUpRequest.getName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
-        user.setProvider(AuthProvider.local);
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        User result = userRepository.save(user);
+        User result= userService.createUser(signUpRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
