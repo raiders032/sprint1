@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class UserController {
 
@@ -23,4 +25,12 @@ public class UserController {
         return userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
+
+    @GetMapping("api/v1/user")
+    @PreAuthorize("hasRole('USER')")
+    public List<User> getUserList(@CurrentUser UserPrincipal userPrincipal) {
+        return userRepository.findAllCustom();
+    }
+
+
 }
