@@ -1,15 +1,20 @@
 package com.swm.sprint1.controller;
 
 
+import com.querydsl.core.Tuple;
 import com.swm.sprint1.domain.User;
 import com.swm.sprint1.exception.ResourceNotFoundException;
 import com.swm.sprint1.payload.ApiResponse;
+import com.swm.sprint1.payload.GetUserResponse;
 import com.swm.sprint1.payload.UpdateUserCategoryRequest;
 import com.swm.sprint1.payload.UserUpdateRequest;
+import com.swm.sprint1.repository.UserCategoryRepository;
 import com.swm.sprint1.repository.UserRepository;
 import com.swm.sprint1.security.CurrentUser;
 import com.swm.sprint1.security.UserPrincipal;
 import com.swm.sprint1.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,27 +22,27 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Api(value = "user")
 @RequiredArgsConstructor
 @RestController
 public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private final UserCategoryRepository userCategoryRepository;
 
+    @ApiOperation(value = "유저의 정보를 반환")
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+    public User getCurrentUser2(@CurrentUser UserPrincipal userPrincipal) {
         return userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
-    @GetMapping("/api/v1/user")
-    @PreAuthorize("hasRole('USER')")
-    public List<User> getUserList(@CurrentUser UserPrincipal userPrincipal) {
-        return userRepository.findAllCustom();
-    }
 
+    @ApiOperation(value = "유저의 정보를 수정", notes = "유저의 이름을 변경한다")
     @PutMapping("/api/v1/user")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateUser(@CurrentUser UserPrincipal userPrincipal
@@ -46,11 +51,30 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse(true,"nickname 수정 완료"));
     }
 
-    @PostMapping("/api/v1/user/category")
+    @ApiOperation(value = "유저의 카테고리 수정")
+    @PutMapping("/api/v1/user/category")
     public ResponseEntity<?> updateUserCategories(@CurrentUser UserPrincipal userPrincipal
             , @Valid @RequestBody UpdateUserCategoryRequest updateUserCategoryRequest){
         userService.updateUserCategories(userPrincipal.getId(), updateUserCategoryRequest);
-        return ResponseEntity.ok(new ApiResponse(true,"nickname 수정 완료"));
+        return ResponseEntity.ok(new ApiResponse(true,"카테고리 수정 완료"));
+    }
+
+    @ApiOperation(value = "유저의 정보를 반환")
+    @GetMapping("/api/v1/user")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getUser(@CurrentUser UserPrincipal userPrincipal) {
+        User user = userRepository.findById(userPrincipal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+        List<String> name = userCategoryRepository.findCategoryNameByUserId(userPrincipal.getId());
+        List<String> categories = user.getCategories().stream().map(userCategory -> userCategory.getCategory().getName()).collect(Collectors.toList());
+        return ResponseEntity.ok(new GetUserResponse(userPrincipal.getId(),userPrincipal.getName(),categories));
+    }
+
+    @ApiOperation(value = "유저의 목록을 반환")
+    @GetMapping("/api/v1/users")
+    @PreAuthorize("hasRole('USER')")
+    public List<User> getUserList(@CurrentUser UserPrincipal userPrincipal) {
+        return userRepository.findAllCustom();
     }
 
 

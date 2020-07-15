@@ -26,6 +26,15 @@ public class UserCategoryRepositoryImpl implements UserCategoryRepositoryCustom 
     }
 
     @Override
+    public List<String> findCategoryNameByUserId(Long userId) {
+        return  queryFactory.select(category.name)
+                .from(userCategory)
+                .join(userCategory.category, category)
+                .where(userCategory.user.id.eq(userId))
+                .fetch();
+    }
+
+    @Override
     public long deleteUserCategory(Long userId) {
         return queryFactory.delete(userCategory).where(userCategory.user.id.eq(userId)).execute();
     }
