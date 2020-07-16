@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface UserCategoryRepositoryCustom {
     List<Category> findCategoryByUserId(Long userId);
-    List<String> findCategoryNameByUserId(Long userId);
 
     long deleteUserCategory(Long userId);
 }

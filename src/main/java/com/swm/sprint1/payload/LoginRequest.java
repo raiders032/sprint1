@@ -1,8 +1,11 @@
 package com.swm.sprint1.payload;
 
+import lombok.AllArgsConstructor;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+@AllArgsConstructor
 public class LoginRequest {
     @NotBlank
     @Email

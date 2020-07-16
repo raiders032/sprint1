@@ -2,6 +2,7 @@ package com.swm.sprint1.controller;
 
 
 import com.querydsl.core.Tuple;
+import com.swm.sprint1.domain.Category;
 import com.swm.sprint1.domain.User;
 import com.swm.sprint1.exception.ResourceNotFoundException;
 import com.swm.sprint1.payload.ApiResponse;
@@ -63,10 +64,8 @@ public class UserController {
     @GetMapping("/api/v1/user")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getUser(@CurrentUser UserPrincipal userPrincipal) {
-        User user = userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-        List<String> name = userCategoryRepository.findCategoryNameByUserId(userPrincipal.getId());
-        List<String> categories = user.getCategories().stream().map(userCategory -> userCategory.getCategory().getName()).collect(Collectors.toList());
+        User user = userService.findById(userPrincipal.getId());
+        List<Category> categories = userCategoryRepository.findCategoryByUserId(userPrincipal.getId());
         return ResponseEntity.ok(new GetUserResponse(userPrincipal.getId(),userPrincipal.getName(),categories));
     }
 
