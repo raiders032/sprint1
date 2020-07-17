@@ -21,6 +21,14 @@ public class UserCategoryRepositoryImpl implements UserCategoryRepositoryCustom 
     public List<Category> findCategoryByUserId(Long userId) {
         return  queryFactory.select(category)
                 .from(userCategory)
+                .where(user.id.eq(userId))
+                .fetch();
+    }
+
+    @Override
+    public List<String> findCategoryNameByUserId(Long userId) {
+        return  queryFactory.select(category.name)
+                .from(userCategory)
                 .join(userCategory.category, category)
                 .where(userCategory.user.id.eq(userId))
                 .fetch();

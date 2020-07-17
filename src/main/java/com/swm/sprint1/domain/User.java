@@ -44,7 +44,7 @@ public class User extends DateEntity{
 
     private String providerId;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private Set<UserCategory> categories = new HashSet<>();
 
     public User(String name, String email, String password) {

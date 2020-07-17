@@ -55,9 +55,4 @@ public class UserService {
         user.changeUserCategory(userCategories);
         userCategories.forEach(userCategory -> userCategoryRepository.save(userCategory));
     }
-
-    public User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
-    }
 }
