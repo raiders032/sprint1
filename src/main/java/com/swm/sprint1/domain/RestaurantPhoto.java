@@ -1,7 +1,7 @@
 package com.swm.sprint1.domain;
 
-
 import com.swm.sprint1.domain.base.DateEntity;
+import com.swm.sprint1.domain.base.UserDateEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,16 +11,17 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "category", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "name")
-})
-public class Category{
-
+public class RestaurantPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "restaurant_photo_id")
     private Long id;
 
-    @Column(unique = true)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "retaurant_id")
+    private Restaurant restaurant;
+
+    private String filename;
+
+    private String path;
 }

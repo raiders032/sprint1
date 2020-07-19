@@ -1,4 +1,4 @@
-package com.swm.sprint1.payload;
+package com.swm.sprint1.payload.request;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,12 +1,11 @@
 package com.swm.sprint1.service;
 
 import com.swm.sprint1.domain.AuthProvider;
-import com.swm.sprint1.domain.Category;
 import com.swm.sprint1.domain.User;
 import com.swm.sprint1.domain.UserCategory;
 import com.swm.sprint1.exception.ResourceNotFoundException;
-import com.swm.sprint1.payload.UpdateUserCategoryRequest;
-import com.swm.sprint1.payload.SignUpRequest;
+import com.swm.sprint1.payload.request.UpdateUserCategoryRequest;
+import com.swm.sprint1.payload.request.SignUpRequest;
 import com.swm.sprint1.repository.CategoryRepository;
 import com.swm.sprint1.repository.UserCategoryRepository;
 import com.swm.sprint1.repository.UserRepository;
@@ -22,11 +21,10 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class UserService {
-
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserCategoryRepository userCategoryRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public User createUser(SignUpRequest signUpRequest) {
@@ -54,5 +52,9 @@ public class UserService {
                 .map(name -> new UserCategory(categoryRepository.findByName(name))).collect(Collectors.toSet());
         user.changeUserCategory(userCategories);
         userCategories.forEach(userCategory -> userCategoryRepository.save(userCategory));
+    }
+
+    public List<String> getUserCategoryName(Long id) {
+        return userCategoryRepository.findCategoryNameByUserId(id);
     }
 }

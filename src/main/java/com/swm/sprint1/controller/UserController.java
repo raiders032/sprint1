@@ -1,13 +1,12 @@
 package com.swm.sprint1.controller;
 
 
-import com.querydsl.core.Tuple;
 import com.swm.sprint1.domain.User;
 import com.swm.sprint1.exception.ResourceNotFoundException;
-import com.swm.sprint1.payload.ApiResponse;
-import com.swm.sprint1.payload.GetUserResponse;
-import com.swm.sprint1.payload.UpdateUserCategoryRequest;
-import com.swm.sprint1.payload.UserUpdateRequest;
+import com.swm.sprint1.payload.response.ApiResponse;
+import com.swm.sprint1.payload.response.GetUserResponse;
+import com.swm.sprint1.payload.request.UpdateUserCategoryRequest;
+import com.swm.sprint1.payload.request.UserUpdateRequest;
 import com.swm.sprint1.repository.UserCategoryRepository;
 import com.swm.sprint1.repository.UserRepository;
 import com.swm.sprint1.security.CurrentUser;
@@ -41,11 +40,10 @@ public class UserController {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
-
     @ApiOperation(value = "유저의 정보를 수정", notes = "유저의 이름을 변경한다")
-    @PutMapping("/api/v1/user")
+    @PutMapping("/api/v1/user/name")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> updateUser(@CurrentUser UserPrincipal userPrincipal
+    public ResponseEntity<?> updateUserName(@CurrentUser UserPrincipal userPrincipal
             , @Valid @RequestBody UserUpdateRequest request){
         userService.updateUser(userPrincipal.getId(),request.getName());
         return ResponseEntity.ok(new ApiResponse(true,"nickname 수정 완료"));
@@ -53,6 +51,7 @@ public class UserController {
 
     @ApiOperation(value = "유저의 카테고리 수정")
     @PutMapping("/api/v1/user/category")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateUserCategories(@CurrentUser UserPrincipal userPrincipal
             , @Valid @RequestBody UpdateUserCategoryRequest updateUserCategoryRequest){
         userService.updateUserCategories(userPrincipal.getId(), updateUserCategoryRequest);
@@ -60,14 +59,11 @@ public class UserController {
     }
 
     @ApiOperation(value = "유저의 정보를 반환")
-    @GetMapping("/api/v1/user")
+    @GetMapping("/api/v1/user/me")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getUser(@CurrentUser UserPrincipal userPrincipal) {
-        User user = userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-        List<String> name = userCategoryRepository.findCategoryNameByUserId(userPrincipal.getId());
-        List<String> categories = user.getCategories().stream().map(userCategory -> userCategory.getCategory().getName()).collect(Collectors.toList());
-        return ResponseEntity.ok(new GetUserResponse(userPrincipal.getId(),userPrincipal.getName(),categories));
+        List<String> categoryName = userService.getUserCategoryName(userPrincipal.getId());
+        return ResponseEntity.ok(new GetUserResponse(userPrincipal.getId(),userPrincipal.getUsername(),userPrincipal.getEmail(),categoryName));
     }
 
     @ApiOperation(value = "유저의 목록을 반환")

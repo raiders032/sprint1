@@ -1,4 +1,4 @@
-package com.swm.sprint1.domain;
+package com.swm.sprint1.domain.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

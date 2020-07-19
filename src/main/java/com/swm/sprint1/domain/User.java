@@ -1,5 +1,6 @@
 package com.swm.sprint1.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.swm.sprint1.domain.base.DateEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,9 +15,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User extends DateEntity{
+public class User extends DateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false)

@@ -1,21 +1,22 @@
-package com.swm.sprint1.payload;
+package com.swm.sprint1.payload.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
 public class GetUserResponse {
-    private String name;
     private Long id;
+    private String email;
+    private String name;
     private List<String> categories;
 
-    public GetUserResponse(Long id, String name, List<String> categories) {
+    public GetUserResponse(Long id, String name,String email, List<String> categories) {
         this.id=id;
         this.name=name;
+        this.email=email;
         this.categories=categories;
     }
 }

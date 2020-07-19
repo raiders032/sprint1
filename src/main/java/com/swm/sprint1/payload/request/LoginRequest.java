@@ -1,4 +1,4 @@
-package com.swm.sprint1.payload;
+package com.swm.sprint1.payload.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

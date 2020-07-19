@@ -1,23 +1,20 @@
 package com.swm.sprint1.controller;
 
-import com.swm.sprint1.domain.AuthProvider;
 import com.swm.sprint1.domain.User;
 import com.swm.sprint1.exception.BadRequestException;
-import com.swm.sprint1.payload.ApiResponse;
-import com.swm.sprint1.payload.AuthResponse;
-import com.swm.sprint1.payload.LoginRequest;
-import com.swm.sprint1.payload.SignUpRequest;
+import com.swm.sprint1.payload.response.ApiResponse;
+import com.swm.sprint1.payload.response.AuthResponse;
+import com.swm.sprint1.payload.request.LoginRequest;
+import com.swm.sprint1.payload.request.SignUpRequest;
 import com.swm.sprint1.repository.UserRepository;
 import com.swm.sprint1.security.TokenProvider;
 import com.swm.sprint1.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
