@@ -1,5 +1,6 @@
 package com.swm.sprint1.security.oauth2.user;
 
+import java.security.Principal;
 import java.util.Map;
 
 public abstract class OAuth2UserInfo {
