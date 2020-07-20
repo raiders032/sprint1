@@ -1,53 +1,82 @@
 package com.swm.sprint1.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swm.sprint1.domain.base.DateEntity;
 import com.swm.sprint1.domain.base.UserDateEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = "naver_id")})
 public class Restaurant {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "restaurant_id")
     private Long id;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Menu> menuList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<RestaurantPhoto> photos = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    private List<RestaurantCategory> restaurantCategories = new ArrayList<>();
 
     @Column(nullable = false)
     private String name;
 
-    private double googleRating;
+    @Column(precision = 3, scale = 2)
+    private BigDecimal googleRating;
 
-    private double naverRating;
+    @Column(precision = 2, scale = 1)
+    private BigDecimal naverRating;
 
-    private int naverReviewCount ;
+    @Column(columnDefinition = "int(5) default 0")
+    private int naverReviewCount;
 
-    private int googleReviewCount ;
+    @Column(columnDefinition = "int(5) default 0")
+    private int googleReviewCount;
 
     private String openingHours;
 
-    private String businessStatus;
-
+    @Column(columnDefinition = "int(1) default 0")
     private int priceLevel;
 
     private String address;
 
     private String roadAddress;
 
-    private float longitude;
+    @Column(precision = 10, scale = 7)
+    private BigDecimal longitude;
 
-    private float latitude;
+    @Column(precision = 10, scale = 7)
+    private BigDecimal latitude;
 
-    private String phone;
+    @Column(name = "naver_id")
+    private Long naverId;
+
+    private Long googleId;
+
+    private String phoneNumber;
+
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdDate;
+
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime modifiedDate;
 }
