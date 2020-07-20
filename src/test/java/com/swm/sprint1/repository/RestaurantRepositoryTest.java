@@ -44,11 +44,13 @@ public class RestaurantRepositoryTest {
         BigDecimal longitude=BigDecimal.valueOf(126.9173149);
         Long id = 1L;
 
+        List<Long> fetch1 = queryFactory.select(userCategory.category.id).from(userCategory).where(userCategory.user.id.eq(id)).fetch();
+
         List<Restaurant> fetch = queryFactory
                 .select(restaurant)
                 .from(restaurant)
+                .join(restaurant.restaurantCategories)
                 .where(latitudeBetween(latitude), longitudeBetween(longitude))
-                //.where(restaurant.latitude.between(subtract, add))
                 .fetch();
 
         fetch.stream().forEach(x->System.out.println(x));

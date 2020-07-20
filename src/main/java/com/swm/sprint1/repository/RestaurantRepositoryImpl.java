@@ -31,6 +31,11 @@ public class RestaurantRepositoryImpl implements RestaurantRepositoryCustom{
                 .fetch();
     }
 
+    @Override
+    public List<Restaurant> findRestaurantByLatitudeAndLongitudeAndUserCategory(BigDecimal latitude, BigDecimal longitude, Long id) {
+        return null;
+    }
+
     private BooleanExpression latitudeBetween(BigDecimal latitude){
         return latitude != null ? restaurant.latitude.between(latitude.subtract(BigDecimal.valueOf(0.01)), latitude.add(BigDecimal.valueOf(0.01))) : null;
     }

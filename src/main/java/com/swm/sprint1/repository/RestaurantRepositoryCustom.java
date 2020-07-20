@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface RestaurantRepositoryCustom {
     List<Restaurant> findRestaurantByLatitudeAndLongitude(BigDecimal latitude, BigDecimal longitude);
+
+    List<Restaurant> findRestaurantByLatitudeAndLongitudeAndUserCategory(BigDecimal latitude, BigDecimal longitude, Long id);
 }
