@@ -43,7 +43,7 @@ public class User extends DateEntity {
     private String providerId;
 
     @OneToMany(mappedBy = "user")
-    private Set<UserCategory> categories = new HashSet<>();
+    private Set<UserCategory> userCategories = new HashSet<>();
 
     public User(String name, String email, String password) {
 
@@ -74,7 +74,7 @@ public class User extends DateEntity {
     }
 
     public void changeUserCategory(Set<UserCategory> userCategories) {
-        this.categories=userCategories;
+        this.userCategories=userCategories;
         userCategories.forEach(userCategory -> userCategory.changeUser(this));
     }
 }

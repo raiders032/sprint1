@@ -3,13 +3,11 @@ package com.swm.sprint1.security.oauth2;
 
 import com.swm.sprint1.domain.AuthProvider;
 import com.swm.sprint1.domain.User;
-import com.swm.sprint1.exception.OAuth2AuthenticationProcessingException;
-import com.swm.sprint1.repository.UserRepository;
+import com.swm.sprint1.repository.user.UserRepository;
 import com.swm.sprint1.security.UserPrincipal;
 import com.swm.sprint1.security.oauth2.user.OAuth2UserInfo;
 import com.swm.sprint1.security.oauth2.user.OAuth2UserInfoFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -17,7 +15,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 

@@ -6,7 +6,7 @@ import com.swm.sprint1.payload.response.ApiResponse;
 import com.swm.sprint1.payload.response.AuthResponse;
 import com.swm.sprint1.payload.request.LoginRequest;
 import com.swm.sprint1.payload.request.SignUpRequest;
-import com.swm.sprint1.repository.UserRepository;
+import com.swm.sprint1.repository.user.UserRepository;
 import com.swm.sprint1.security.TokenProvider;
 import com.swm.sprint1.service.UserService;
 import lombok.RequiredArgsConstructor;

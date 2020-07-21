@@ -7,8 +7,8 @@ import com.swm.sprint1.payload.response.ApiResponse;
 import com.swm.sprint1.payload.response.GetUserResponse;
 import com.swm.sprint1.payload.request.UpdateUserCategoryRequest;
 import com.swm.sprint1.payload.request.UserUpdateRequest;
-import com.swm.sprint1.repository.UserCategoryRepository;
-import com.swm.sprint1.repository.UserRepository;
+import com.swm.sprint1.repository.user.UserCategoryRepository;
+import com.swm.sprint1.repository.user.UserRepository;
 import com.swm.sprint1.security.CurrentUser;
 import com.swm.sprint1.security.UserPrincipal;
 import com.swm.sprint1.service.UserService;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Api(value = "user")
 @RequiredArgsConstructor
@@ -54,8 +53,8 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateUserCategories(@CurrentUser UserPrincipal userPrincipal
             , @Valid @RequestBody UpdateUserCategoryRequest updateUserCategoryRequest){
-        userService.updateUserCategories(userPrincipal.getId(), updateUserCategoryRequest);
-        return ResponseEntity.ok(new ApiResponse(true,"카테고리 수정 완료"));
+        ApiResponse response = userService.updateUserCategories(userPrincipal.getUser(), updateUserCategoryRequest);
+        return ResponseEntity.ok(response);
     }
 
     @ApiOperation(value = "유저의 정보를 반환")

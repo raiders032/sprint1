@@ -79,4 +79,6 @@ public class Restaurant {
 
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime modifiedDate;
+
+    private String thumUrl;
 }

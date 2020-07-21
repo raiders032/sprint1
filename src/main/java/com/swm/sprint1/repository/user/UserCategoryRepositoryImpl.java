@@ -1,4 +1,4 @@
-package com.swm.sprint1.repository;
+package com.swm.sprint1.repository.user;
 
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import static com.swm.sprint1.domain.QCategory.*;
-import static com.swm.sprint1.domain.QUser.*;
 import static com.swm.sprint1.domain.QUserCategory.*;
 
 
@@ -21,7 +20,7 @@ public class UserCategoryRepositoryImpl implements UserCategoryRepositoryCustom 
     public List<Category> findCategoryByUserId(Long userId) {
         return  queryFactory.select(category)
                 .from(userCategory)
-                .where(user.id.eq(userId))
+                .where(userCategory.user.id.eq(userId))
                 .fetch();
     }
 

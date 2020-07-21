@@ -18,7 +18,7 @@ public class RestaurantPhoto {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "retaurant_id")
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
     private String filename;

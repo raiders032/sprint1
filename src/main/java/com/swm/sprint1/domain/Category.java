@@ -19,11 +19,8 @@ public class Category{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private Long id;
+    private String id;
 
     @Column(unique = true)
     private String name;
-
-    @Column(unique = true)
-    private String metaCategory;
 }
