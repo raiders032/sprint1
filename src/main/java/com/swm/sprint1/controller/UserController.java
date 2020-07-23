@@ -61,8 +61,9 @@ public class UserController {
     @GetMapping("/api/v1/user/me")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getUser(@CurrentUser UserPrincipal userPrincipal) {
+        User user = userPrincipal.getUser();
         List<String> categoryName = userService.getUserCategoryName(userPrincipal.getId());
-        return ResponseEntity.ok(new GetUserResponse(userPrincipal.getId(),userPrincipal.getUsername(),userPrincipal.getEmail(),categoryName));
+        return ResponseEntity.ok(new GetUserResponse(user.getId(),user.getName(), user.getEmail(), user.getImageUrl(), categoryName));
     }
 
     @ApiOperation(value = "유저의 목록을 반환")
