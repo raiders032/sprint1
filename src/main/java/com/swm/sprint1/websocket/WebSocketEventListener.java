@@ -17,8 +17,6 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class WebSocketEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
-    private final PublicManager publicManager;
-
 
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
@@ -34,10 +32,8 @@ public class WebSocketEventListener {
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
         if(username != null) {
-            publicManager.getUserMap().remove(username);
             logger.info("User Disconnected : " + username);
             logger.info("Online User : ");
-            publicManager.getUserMap().forEach((s, s2) ->logger.info(s));
             ChatMessage chatMessage = new ChatMessage();
             chatMessage.setType(ChatMessage.MessageType.LEAVE);
             chatMessage.setSender(username);
