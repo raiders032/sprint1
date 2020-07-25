@@ -1,7 +1,5 @@
-package com.swm.sprint1.repository;
+package com.swm.sprint1.websocket;
 
-
-import com.swm.sprint1.websocket.ChatRoom;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
