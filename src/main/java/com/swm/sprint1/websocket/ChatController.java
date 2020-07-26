@@ -21,20 +21,4 @@ public class ChatController {
         headerAccessor.getSessionAttributes().put("roomId", message.getRoomId());
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
-
-    public void addUSer (ChatMessage message, SimpMessageHeaderAccessor headerAccessor ){
-        headerAccessor.getSessionAttributes().put("userId", message.getUserID());
-    }
-
-    @MessageMapping("/public/adduser2")
-    public void addUSer2 (@Payload Msg message, SimpMessageHeaderAccessor headerAccessor ){
-        message.setUserName("ㅋㅋ루핑");
-        headerAccessor.getSessionAttributes().put("private-username", "babo");
-        messagingTemplate.convertAndSend("/sub/public" , message);
-    }
-
-
-
-
-
 }
