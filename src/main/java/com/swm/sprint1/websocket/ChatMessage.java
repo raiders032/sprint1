@@ -1,20 +1,40 @@
 package com.swm.sprint1.websocket;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+/**
+ * Created by rajeevkumarsingh on 24/07/17.
+ */
 public class ChatMessage {
+    private MessageType type;
+    private String content;
+    private String sender;
 
-    // 메시지 타입 : 입장, 채팅
     public enum MessageType {
-        ENTER, TALK, LEAVE
+        CHAT,
+        JOIN,
+        LEAVE
     }
 
-    private MessageType type; // 메시지 타입
-    private String roomId; // 방번호
-    private String sender; // 메시지 보낸사람
-    private String message; // 메시지
-    private Long userID;
+    public MessageType getType() {
+        return type;
+    }
+
+    public void setType(MessageType type) {
+        this.type = type;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 }
